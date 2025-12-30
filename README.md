@@ -48,36 +48,105 @@ AI 研究者在选择研究方向时面临三大困境：
 
 > 决定了论文是发在顶会 Oral 还是普通 Workshop
 
-| 指标 | 核心问题 | 高分特征 | 低分特征 |
-|------|---------|---------|---------|
-| **P1 趋势红利** | 该方向在顶会的热度趋势 | 指数爆发期（如 Video Gen、Agent） | 逐年下降，被视为过时 |
-| **P2 叙事深度** | 是科学问题还是工程 Trick？ | 能关联第一性原理、Scaling Law | 仅对特定数据集有效 |
-| **P3 SOTA 渗透率** | 想被认可需要提升多少？ | 新领域，简单改进即 SOTA | 榜单饱和（99%+），提升极难 |
+#### P1 趋势红利 / Trend Momentum
+
+**核心问题**：该方向在顶会的热度趋势如何？是处于爆发期还是衰退期？
+
+| 评分 | 特征 | 具体例子 |
+|------|------|---------|
+| **8-10 分** | 指数爆发期，论文数量年增长 >50% | **Video Generation**：NeurIPS 2025 出现 *Deep Compositional Phase Diffusion for Long Motion Sequence Generation* 等多篇 Oral，Sora 发布后该方向论文激增 |
+| **5-7 分** | 稳定增长，主流但非爆发 | **Mixture-of-Experts (MoE)**：*Advancing Expert Specialization for Better MoE*、*Gated Attention for LLMs* 持续有高质量工作，但增速平稳 |
+| **1-4 分** | 逐年下降，被视为过时 | 传统 CNN 图像分类：被 ViT 替代，顶会论文数量锐减 |
+
+#### P2 叙事深度 / Narrative Depth
+
+**核心问题**：这是一个真正的科学问题，还是仅仅是工程 Trick？能否关联第一性原理？
+
+| 评分 | 特征 | 具体例子 |
+|------|------|---------|
+| **8-10 分** | 能关联 Scaling Law、第一性原理 | **Scaling Depth in RL**：*1000 Layer Networks for Self-Supervised RL* 探索深度与性能的 Scaling 关系，具有理论深度 |
+| **5-7 分** | 有一定理论贡献，但更偏工程 | **RAG 优化**：*Boosting Knowledge Utilization in MLLMs via Adaptive Logits Fusion* 解决实际问题，但理论创新有限 |
+| **1-4 分** | 纯工程 Trick，仅对特定数据集有效 | 针对某个 benchmark 的超参调优，无法泛化 |
+
+#### P3 SOTA 渗透率 / SOTA Saturation
+
+**核心问题**：想要在这个领域被认可，需要提升多少性能？榜单是否已经饱和？
+
+| 评分 | 特征 | 具体例子 |
+|------|------|---------|
+| **8-10 分** | 新领域，简单改进即可 SOTA | **3D Vision-Language Navigation**：*Dynam3D* 在 R2R-CE、REVERIE-CE 等新 benchmark 上取得 SOTA，领域尚未饱和 |
+| **5-7 分** | 中等难度，需显著创新 | **Offline RL**：*A Clean Slate for Offline RL* 需要系统性重新设计才能超越 baseline |
+| **1-4 分** | 榜单饱和（99%+），提升极难 | ImageNet 分类：Top-1 已达 ~91%，提升 0.1% 需要巨大资源 |
+
+---
 
 ### F 维度：技术可行性 / Feasibility（权重 40%）— ⚠️ 核心风控项
 
 > 对于非巨头团队，这是能否做出来的**决定性因素**
 
-| 指标 | 核心问题 | 高分特征 | 低分特征 |
-|------|---------|---------|---------|
-| **F1 算力匹配度** | 你的显卡能支撑吗？ | 单卡 4090 / Colab 即可 | 需 H100 集群从零预训练 |
-| **F2 数据获取** | 数据从哪来？ | HuggingFace 现成高质量数据 | 私有数据、需昂贵人工标注 |
-| **F3 迭代周期** | 跑一次实验多久？ | < 12 小时（一天验证 2 个 Idea） | > 1 周（Debug 成本极高） |
+#### F1 算力匹配度 / Compute Match（⚠️ 生死线）
 
-**关键设计：短板计分法**
+**核心问题**：你的显卡/算力能否支撑这个方向的主流实验？
+
+| 评分 | 特征 | 具体例子 |
+|------|------|---------|
+| **8-10 分** | 单卡 4090 / Colab 即可 | **Sparse Autoencoders 可解释性**：*A is for Absorption: Studying Feature Splitting in SAEs* 分析已有模型，无需大规模训练 |
+| **5-7 分** | 需要 4-8 卡 A100，可租用 | **MoE Fine-tuning**：*Advancing Expert Specialization for Better MoE* 需要中等规模算力进行 SFT |
+| **1-4 分** | 需 H100 集群从零预训练 | **Video Generation 预训练**：Sora 级别模型需要数千 GPU 天，个人研究者几乎不可能复现 |
+
+#### F2 数据获取 / Data Accessibility
+
+**核心问题**：做这个方向需要的数据从哪来？是否可获取？
+
+| 评分 | 特征 | 具体例子 |
+|------|------|---------|
+| **8-10 分** | HuggingFace 现成高质量数据 | **NLP 任务**：大量开源数据集（C4、RedPajama、OpenWebText）可直接使用 |
+| **5-7 分** | 需要一定处理或小规模标注 | **Vision-Language Navigation**：*Dynam3D* 使用 R2R、REVERIE 等公开数据集，但需要 3D 环境配置 |
+| **1-4 分** | 私有数据、需昂贵人工标注 | **医疗影像分析**：需要医院合作获取 HIPAA 合规数据，标注需要专业医生 |
+
+#### F3 迭代周期 / Iteration Time
+
+**核心问题**：跑通一次完整实验需要多长时间？
+
+| 评分 | 特征 | 具体例子 |
+|------|------|---------|
+| **8-10 分** | < 12 小时（一天验证 2 个 Idea） | **SAE 分析**：在已有模型上运行分析，几小时出结果 |
+| **5-7 分** | 1-3 天 | **RL 训练**：*Adaptive Surrogate Gradients for SNN RL* 中等规模 RL 训练 |
+| **1-4 分** | > 1 周（Debug 成本极高） | **LLM 预训练**：单次训练数周，失败一次损失巨大 |
+
+**⚠️ 关键设计：短板计分法**
 ```
 F 维度得分 = min(F1, F2, F3)
 ```
-> 逻辑：如果算力是 1 分，哪怕数据和周期都是 10 分，整个 F 项也只能得 1 分。避免"眼高手低"。
+> **逻辑**：如果算力是 2 分，哪怕数据和周期都是 10 分，整个 F 项也只能得 2 分。
+> 
+> **原因**：可行性是"木桶效应"——最短的板决定能否做出来。避免研究者"眼高手低"，选择自己无法完成的方向。
+
+---
 
 ### C 维度：竞争环境 / Competition（权重 25%）
 
 > 决定了是否会撞车及生存空间
 
-| 指标 | 核心问题 | 高分特征 | 低分特征 |
-|------|---------|---------|---------|
-| **C1 巨头避让度** | OpenAI/Google/Meta 在做吗？ | 冷门或交叉领域，大厂未涉足 | 主战场，每天 arXiv 几十篇 |
-| **C2 研究空白区** | 还有创新空间吗？ | 处女地，可定义新任务 | 缝隙极小，只能做 A+B 缝合 |
+#### C1 巨头避让度 / Giant Avoidance（反向指标）
+
+**核心问题**：OpenAI、Google、Meta、Anthropic 是否在这个方向重兵投入？
+
+| 评分 | 特征 | 具体例子 |
+|------|------|---------|
+| **8-10 分** | 冷门或交叉领域，大厂未涉足 | **联邦学习 + 增量学习**：*Class-wise Balancing Data Replay for Federated Class-Incremental Learning* 交叉领域，巨头关注度低 |
+| **5-7 分** | 大厂有布局但非主战场 | **Offline RL**：有研究但非战略重点，中小团队仍有机会 |
+| **1-4 分** | 主战场，每天 arXiv 几十篇 | **Video Generation**：Sora、Veo、Kling 等巨头产品密集发布，竞争白热化 |
+
+#### C2 研究空白区 / Research Whitespace
+
+**核心问题**：这个领域是否还有创新空间？能否定义新问题？
+
+| 评分 | 特征 | 具体例子 |
+|------|------|---------|
+| **8-10 分** | 处女地，可定义新任务/新 benchmark | **Opinion Intervals in Signed Graphs**：*Discovering Opinion Intervals from Conflicts* 定义全新问题，开辟新赛道 |
+| **5-7 分** | 有空间但需差异化 | **MoE 优化**：仍有改进空间，但需要找到独特切入点（如 *Gated Attention* 的门控机制） |
+| **1-4 分** | 缝隙极小，只能做 A+B 缝合 | 成熟领域的 incremental improvement，难以发表 |
 
 ### 评分计算 / Scoring Formula
 
