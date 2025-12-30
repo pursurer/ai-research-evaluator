@@ -1,0 +1,124 @@
+# ============================================
+# AI Research Evaluator - Git Ignore
+# ============================================
+
+# --------------------------------------------
+# Python
+# --------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# --------------------------------------------
+# Virtual Environments
+# --------------------------------------------
+venv/
+ENV/
+env/
+.venv/
+
+# --------------------------------------------
+# IDE & Editors
+# --------------------------------------------
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# --------------------------------------------
+# Environment & Secrets
+# --------------------------------------------
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+secrets/
+
+# --------------------------------------------
+# Testing & Coverage
+# --------------------------------------------
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# --------------------------------------------
+# Type Checking
+# --------------------------------------------
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# --------------------------------------------
+# Documentation
+# --------------------------------------------
+docs/_build/
+site/
+
+# --------------------------------------------
+# Jupyter Notebooks
+# --------------------------------------------
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# --------------------------------------------
+# OS Generated
+# --------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# --------------------------------------------
+# Project Specific
+# --------------------------------------------
+# Local data copies (use PAPERS_DATA_ROOT instead)
+data/*.csv
+data/*.json
+!data/.gitkeep
+
+# Generated reports (keep structure, ignore content)
+reports/**/*.md
+!reports/.gitkeep
+!reports/YYYY-MM/.gitkeep
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Cache
+.cache/
+*.cache

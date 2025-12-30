@@ -1,0 +1,4 @@
+id,title,keywords,abstract,pdf,forum,year,presentation_type
+test_1,Sample Paper on Video Generation,"[""Video Generation"", ""Diffusion Models"", ""Deep Learning""]","This is a sample abstract about video generation using diffusion models.",https://example.com/paper1.pdf,https://example.com/forum1,2024,Oral
+test_2,Efficient Fine-tuning Methods,"[""PEFT"", ""LoRA"", ""Parameter Efficient""]","This paper explores parameter-efficient fine-tuning methods for large language models.",https://example.com/paper2.pdf,https://example.com/forum2,2024,Poster
+test_3,Multimodal Alignment Techniques,"[""Multimodal"", ""Alignment"", ""Vision-Language""]","We present novel techniques for aligning vision and language representations.",https://example.com/paper3.pdf,https://example.com/forum3,2024,Oral

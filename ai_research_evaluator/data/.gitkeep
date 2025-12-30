@@ -1,0 +1,3 @@
+# Data directory placeholder
+# Local data copies (optional)
+# Primary data source should be configured via PAPERS_DATA_ROOT environment variable
