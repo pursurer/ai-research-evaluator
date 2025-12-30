@@ -104,6 +104,13 @@ Thumbs.db
 # --------------------------------------------
 # Project Specific
 # --------------------------------------------
+# Local development docs (keep local, not in repo)
+AGENTS.md
+judge.md
+项目规划.md
+项目结构.md
+docs/local/
+
 # Local data copies (use PAPERS_DATA_ROOT instead)
 data/*.csv
 data/*.json
