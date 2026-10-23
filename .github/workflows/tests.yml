@@ -56,7 +56,8 @@ jobs:
       - name: Install linting tools
         run: |
           python -m pip install --upgrade pip
-          pip install black isort ruff
+          # Pin linters so a new upstream release cannot turn CI red on unchanged code.
+          pip install "black==26.10.1" "isort==9.0.2" "ruff==0.17.2"
 
       - name: Check code formatting (black)
         run: |

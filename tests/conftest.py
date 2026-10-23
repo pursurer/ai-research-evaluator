@@ -3,8 +3,9 @@ Pytest configuration and fixtures.
 pytest 配置与共享 fixtures
 """
 
-import pytest
 from pathlib import Path
+
+import pytest
 
 
 @pytest.fixture

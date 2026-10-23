@@ -4,7 +4,7 @@ Data loading and processing module.
 """
 
 from src.data.cleaner import clean_abstract, clean_keywords
-from src.data.loader import PapersLoader, SUPPORTED_CONFERENCES
+from src.data.loader import SUPPORTED_CONFERENCES, PapersLoader
 from src.data.schema import ConferenceData, Paper
 
 __all__ = [

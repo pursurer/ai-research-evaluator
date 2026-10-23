@@ -39,6 +39,4 @@ class FuseTriggerError(EvaluatorException):
     def __init__(self, direction: str, f_min: float):
         self.direction = direction
         self.f_min = f_min
-        super().__init__(
-            f"Direction '{direction}' fused: F_min={f_min:.2f} < 3 (infeasible)"
-        )
+        super().__init__(f"Direction '{direction}' fused: F_min={f_min:.2f} < 3 (infeasible)")

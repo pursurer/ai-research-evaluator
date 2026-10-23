@@ -12,5 +12,5 @@ def test_placeholder() -> None:
 def test_python_version() -> None:
     """Ensure Python version is 3.10+."""
     import sys
-    
+
     assert sys.version_info >= (3, 10), "Python 3.10+ is required"

@@ -3,8 +3,6 @@ Data models for paper and conference data.
 论文和会议数据模型定义
 """
 
-from typing import Optional
-
 from pydantic import BaseModel, Field
 
 
@@ -18,10 +16,10 @@ class Paper(BaseModel):
     title: str = Field(..., description="Paper title")
     keywords: list[str] = Field(default_factory=list, description="List of keywords")
     abstract: str = Field(default="", description="Paper abstract")
-    pdf: Optional[str] = Field(default=None, description="PDF URL")
-    forum: Optional[str] = Field(default=None, description="Forum/discussion URL")
+    pdf: str | None = Field(default=None, description="PDF URL")
+    forum: str | None = Field(default=None, description="Forum/discussion URL")
     year: int = Field(..., description="Publication year")
-    presentation_type: Optional[str] = Field(
+    presentation_type: str | None = Field(
         default=None, description="Presentation type (Oral/Poster/Spotlight)"
     )
 
@@ -49,10 +47,10 @@ class ConferenceData(BaseModel):
     def get_papers_by_keyword(self, keyword: str) -> list[Paper]:
         """
         Filter papers containing the specified keyword.
-        
+
         Args:
             keyword: Keyword to search for (case-insensitive)
-            
+
         Returns:
             List of papers containing the keyword
         """
@@ -66,10 +64,10 @@ class ConferenceData(BaseModel):
     def get_papers_by_presentation_type(self, ptype: str) -> list[Paper]:
         """
         Filter papers by presentation type.
-        
+
         Args:
             ptype: Presentation type (Oral/Poster/Spotlight)
-            
+
         Returns:
             List of papers with matching presentation type
         """

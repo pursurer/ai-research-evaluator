@@ -8,9 +8,9 @@ from pathlib import Path
 
 import pytest
 
-from src.data.schema import Paper, ConferenceData
+from src.data.cleaner import clean_abstract, clean_keywords
 from src.data.loader import PapersLoader
-from src.data.cleaner import clean_keywords, clean_abstract
+from src.data.schema import ConferenceData, Paper
 from src.utils.exceptions import DataLoadError
 
 
@@ -115,7 +115,7 @@ class TestPapersLoader:
         loader = PapersLoader()
         csv_path = test_data_dir / "sample_papers.csv"
         papers = loader.load_csv(csv_path)
-        
+
         assert len(papers) == 3
         assert all(isinstance(p, Paper) for p in papers)
 
@@ -124,7 +124,7 @@ class TestPapersLoader:
         loader = PapersLoader()
         csv_path = test_data_dir / "sample_papers.csv"
         papers = loader.load_csv(csv_path)
-        
+
         # First paper should have parsed keywords
         assert isinstance(papers[0].keywords, list)
         assert "Video Generation" in papers[0].keywords
@@ -136,11 +136,13 @@ class TestPapersLoader:
             loader.load_csv(Path("/nonexistent/path.csv"))
         assert "not found" in str(exc_info.value).lower()
 
-    def test_load_conference_by_name(self, test_data_dir: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    def test_load_conference_by_name(
+        self, test_data_dir: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
         """Test loading conference data by name."""
         # Mock the data root to use test data
         monkeypatch.setenv("PAPERS_DATA_ROOT", str(test_data_dir.parent))
-        
+
         loader = PapersLoader()
         # This test will be skipped if real data is not available
         # In production, it would load from PAPERS_DATA_ROOT/NeurIPS/neurips_papers.csv
@@ -151,7 +153,7 @@ class TestPapersLoader:
         # Load multiple CSVs
         csv_files = [test_data_dir / "sample_papers.csv"]
         all_papers = loader.load_multiple_csvs(csv_files)
-        
+
         assert len(all_papers) == 3
 
     def test_get_papers_by_year(self, test_data_dir: Path) -> None:
@@ -159,7 +161,7 @@ class TestPapersLoader:
         loader = PapersLoader()
         csv_path = test_data_dir / "sample_papers.csv"
         papers = loader.load_csv(csv_path)
-        
+
         papers_2024 = [p for p in papers if p.year == 2024]
         assert len(papers_2024) == 3
 
@@ -168,7 +170,7 @@ class TestPapersLoader:
         loader = PapersLoader()
         csv_path = test_data_dir / "sample_papers.csv"
         papers = loader.load_csv(csv_path)
-        
+
         # Filter papers containing "Video Generation" keyword
         video_papers = [p for p in papers if "Video Generation" in p.keywords]
         assert len(video_papers) >= 1
@@ -181,8 +183,14 @@ class TestConferenceData:
         """Test creating ConferenceData."""
         papers = [
             Paper(
-                id="1", title="Test", keywords=[], abstract="",
-                pdf=None, forum=None, year=2024, presentation_type=None
+                id="1",
+                title="Test",
+                keywords=[],
+                abstract="",
+                pdf=None,
+                forum=None,
+                year=2024,
+                presentation_type=None,
             )
         ]
         conf = ConferenceData(
@@ -196,8 +204,26 @@ class TestConferenceData:
     def test_conference_data_paper_count(self) -> None:
         """Test paper_count property."""
         papers = [
-            Paper(id="1", title="T1", keywords=[], abstract="", pdf=None, forum=None, year=2024, presentation_type=None),
-            Paper(id="2", title="T2", keywords=[], abstract="", pdf=None, forum=None, year=2024, presentation_type=None),
+            Paper(
+                id="1",
+                title="T1",
+                keywords=[],
+                abstract="",
+                pdf=None,
+                forum=None,
+                year=2024,
+                presentation_type=None,
+            ),
+            Paper(
+                id="2",
+                title="T2",
+                keywords=[],
+                abstract="",
+                pdf=None,
+                forum=None,
+                year=2024,
+                presentation_type=None,
+            ),
         ]
         conf = ConferenceData(name="ICLR", year=2024, papers=papers)
         assert conf.paper_count == 2

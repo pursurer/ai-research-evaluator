@@ -5,14 +5,12 @@ Data loader for conference paper CSV files.
 
 import os
 from pathlib import Path
-from typing import Optional
 
 import pandas as pd
 
 from src.data.cleaner import clean_abstract, clean_keywords, clean_title, safe_int, safe_str
 from src.data.schema import ConferenceData, Paper
 from src.utils.exceptions import DataLoadError
-
 
 # Supported conferences and their CSV file patterns
 SUPPORTED_CONFERENCES = {
@@ -34,10 +32,10 @@ class PapersLoader:
     顶会论文 CSV 加载器
     """
 
-    def __init__(self, data_root: Optional[str] = None):
+    def __init__(self, data_root: str | None = None):
         """
         Initialize the loader.
-        
+
         Args:
             data_root: Root directory containing conference data.
                        Defaults to PAPERS_DATA_ROOT environment variable.
@@ -47,44 +45,44 @@ class PapersLoader:
     def load_csv(self, csv_path: Path) -> list[Paper]:
         """
         Load papers from a single CSV file.
-        
+
         Args:
             csv_path: Path to the CSV file
-            
+
         Returns:
             List of Paper objects
-            
+
         Raises:
             DataLoadError: If file not found or parsing fails
         """
         csv_path = Path(csv_path)
-        
+
         if not csv_path.exists():
             raise DataLoadError(f"CSV file not found: {csv_path}", str(csv_path))
-        
+
         try:
             df = pd.read_csv(csv_path)
         except Exception as e:
-            raise DataLoadError(f"Failed to parse CSV: {e}", str(csv_path))
-        
+            raise DataLoadError(f"Failed to parse CSV: {e}", str(csv_path)) from e
+
         papers = []
         for _, row in df.iterrows():
             try:
                 paper = self._row_to_paper(row)
                 papers.append(paper)
-            except Exception as e:
+            except Exception:
                 # Log warning but continue processing other rows
                 continue
-        
+
         return papers
 
     def _row_to_paper(self, row: pd.Series) -> Paper:
         """
         Convert a DataFrame row to a Paper object.
-        
+
         Args:
             row: Pandas Series representing a row
-            
+
         Returns:
             Paper object
         """
@@ -102,10 +100,10 @@ class PapersLoader:
     def load_multiple_csvs(self, csv_paths: list[Path]) -> list[Paper]:
         """
         Load papers from multiple CSV files.
-        
+
         Args:
             csv_paths: List of paths to CSV files
-            
+
         Returns:
             Combined list of Paper objects from all files
         """
@@ -118,39 +116,39 @@ class PapersLoader:
     def load_conference(self, conference_name: str) -> ConferenceData:
         """
         Load data for a specific conference.
-        
+
         Args:
             conference_name: Conference name (e.g., 'neurips', 'iclr')
-            
+
         Returns:
             ConferenceData object
-            
+
         Raises:
             DataLoadError: If conference not supported or data not found
         """
         conf_lower = conference_name.lower()
-        
+
         if conf_lower not in SUPPORTED_CONFERENCES:
             raise DataLoadError(
                 f"Unsupported conference: {conference_name}. "
                 f"Supported: {list(SUPPORTED_CONFERENCES.keys())}"
             )
-        
+
         if not self.data_root:
             raise DataLoadError(
                 "PAPERS_DATA_ROOT environment variable not set. "
                 "Please set it to the path containing conference data directories."
             )
-        
+
         csv_filename = SUPPORTED_CONFERENCES[conf_lower]
         csv_path = Path(self.data_root) / conference_name.upper() / csv_filename
-        
+
         papers = self.load_csv(csv_path)
-        
+
         # Extract year from papers (use most common year)
         years = [p.year for p in papers if p.year]
         year = max(set(years), key=years.count) if years else 2024
-        
+
         return ConferenceData(
             name=conference_name.upper(),
             year=year,
@@ -160,7 +158,7 @@ class PapersLoader:
     def load_all_conferences(self) -> dict[str, ConferenceData]:
         """
         Load data from all supported conferences.
-        
+
         Returns:
             Dictionary mapping conference name to ConferenceData
         """
@@ -176,7 +174,7 @@ class PapersLoader:
     def get_all_papers(self) -> list[Paper]:
         """
         Get all papers from all loaded conferences.
-        
+
         Returns:
             List of all Paper objects
         """
