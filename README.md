@@ -7,6 +7,10 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Tests](https://github.com/pursurer/ai-research-evaluator/actions/workflows/tests.yml/badge.svg)](https://github.com/pursurer/ai-research-evaluator/actions)
 
+> **Status: early stage.** The P-F-C framework below is the design. The code so far implements the conference-paper data layer (`src/data`, with tests). The evaluation engine, LLM layer, report generator, `discover.py` and `batch_evaluate.py` are not implemented yet, so the Quick Start and Python API sections describe the planned interface.
+>
+> **状态：早期阶段。** 下文的 P-F-C 框架是设计方案。目前代码只实现了顶会论文数据层（`src/data`，含测试）；评估引擎、LLM 层、报告生成以及 `discover.py`、`batch_evaluate.py` 尚未实现，快速开始与 Python API 部分描述的是计划中的接口。
+
 ---
 
 ## Overview / 概述
@@ -244,7 +248,7 @@ cp .env.example .env
 
 ---
 
-## Quick Start / 快速开始
+## Quick Start / 快速开始 (planned / 计划中)
 
 ```bash
 # Evaluate a research direction
