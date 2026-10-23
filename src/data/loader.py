@@ -25,6 +25,19 @@ SUPPORTED_CONFERENCES = {
     "aistats": "aistats_papers.csv",
 }
 
+# Folder name of each conference in top-ai-conference-papers. Case matters on Linux.
+CONFERENCE_DIRS = {
+    "neurips": "NeurIPS",
+    "iclr": "ICLR",
+    "icml": "ICML",
+    "aaai": "AAAI",
+    "acl": "ACL",
+    "emnlp": "EMNLP",
+    "naacl": "NAACL",
+    "ijcai": "IJCAI",
+    "aistats": "AISTATS",
+}
+
 
 class PapersLoader:
     """
@@ -141,7 +154,8 @@ class PapersLoader:
             )
 
         csv_filename = SUPPORTED_CONFERENCES[conf_lower]
-        csv_path = Path(self.data_root) / conference_name.upper() / csv_filename
+        conf_dir = CONFERENCE_DIRS[conf_lower]
+        csv_path = Path(self.data_root) / conf_dir / csv_filename
 
         papers = self.load_csv(csv_path)
 
@@ -150,7 +164,7 @@ class PapersLoader:
         year = max(set(years), key=years.count) if years else 2024
 
         return ConferenceData(
-            name=conference_name.upper(),
+            name=conf_dir,
             year=year,
             papers=papers,
         )
@@ -165,7 +179,7 @@ class PapersLoader:
         result = {}
         for conf_name in SUPPORTED_CONFERENCES:
             try:
-                result[conf_name.upper()] = self.load_conference(conf_name)
+                result[CONFERENCE_DIRS[conf_name]] = self.load_conference(conf_name)
             except DataLoadError:
                 # Skip conferences that don't have data
                 continue

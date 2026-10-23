@@ -137,15 +137,19 @@ class TestPapersLoader:
         assert "not found" in str(exc_info.value).lower()
 
     def test_load_conference_by_name(
-        self, test_data_dir: Path, monkeypatch: pytest.MonkeyPatch
+        self, sample_papers_csv: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
     ) -> None:
-        """Test loading conference data by name."""
-        # Mock the data root to use test data
-        monkeypatch.setenv("PAPERS_DATA_ROOT", str(test_data_dir.parent))
+        """Test loading a conference from the top-ai-conference-papers folder layout."""
+        # The dataset uses mixed-case folders such as NeurIPS/, which matters on Linux.
+        conf_dir = tmp_path / "NeurIPS"
+        conf_dir.mkdir()
+        (conf_dir / "neurips_papers.csv").write_bytes(sample_papers_csv.read_bytes())
+        monkeypatch.setenv("PAPERS_DATA_ROOT", str(tmp_path))
 
-        loader = PapersLoader()
-        # This test will be skipped if real data is not available
-        # In production, it would load from PAPERS_DATA_ROOT/NeurIPS/neurips_papers.csv
+        conf = PapersLoader().load_conference("neurips")
+
+        assert conf.name == "NeurIPS"
+        assert conf.paper_count == 3
 
     def test_load_all_conferences(self, test_data_dir: Path) -> None:
         """Test loading multiple conference CSVs."""
