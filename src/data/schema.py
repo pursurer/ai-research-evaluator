@@ -3,7 +3,7 @@ Data models for paper and conference data.
 论文和会议数据模型定义
 """
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class Paper(BaseModel):
@@ -11,6 +11,8 @@ class Paper(BaseModel):
     Paper data model representing a single conference paper.
     单篇论文数据模型
     """
+
+    model_config = ConfigDict(str_strip_whitespace=True)
 
     id: str = Field(..., description="Unique identifier for the paper")
     title: str = Field(..., description="Paper title")
@@ -22,11 +24,6 @@ class Paper(BaseModel):
     presentation_type: str | None = Field(
         default=None, description="Presentation type (Oral/Poster/Spotlight)"
     )
-
-    class Config:
-        """Pydantic model configuration."""
-
-        str_strip_whitespace = True
 
 
 class ConferenceData(BaseModel):
